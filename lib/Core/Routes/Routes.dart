@@ -1,7 +1,9 @@
 import 'package:ecommerceapp/Bindings/NavigationBinding.dart';
+import 'package:ecommerceapp/Bindings/SignInPageBindings.dart';
 import 'package:ecommerceapp/Bindings/SignUpBindings.dart';
 import 'package:ecommerceapp/View/AddProductsPage.dart';
 import 'package:ecommerceapp/View/BottomNavigationBar.dart';
+import 'package:ecommerceapp/View/UserProfilePage.dart';
 import 'package:ecommerceapp/View/home_page.dart';
 import 'package:ecommerceapp/View/log_in_page.dart';
 import 'package:ecommerceapp/View/sign_up_page.dart';
@@ -22,7 +24,8 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
       return GetPageRoute(
           routeName: logInPage,
           settings: settings,
-          page: () =>  LogInPage());
+          page: () =>  LogInPage(),
+      binding: SignInPageBindings());
     case homePage:
       return GetPageRoute(
         routeName: homePage,
@@ -30,19 +33,24 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
         page: () => const HomePage(),
         binding: HomepageBindings()
       );
+    case navigationBarPage:
+      return GetPageRoute(
+          routeName: navigationBarPage,
+          settings: settings,
+          page: ()=>BottomNavigationBarPage(),
+          binding: NavigationBarBinding()
+      );
     case addProductPage:
       return GetPageRoute(
           routeName: addProductPage,
           settings: settings,
           page: () => const AddProductPage());
-    case navigationBarPage:
+    case userProfilePage:
       return GetPageRoute(
-        routeName: navigationBarPage,
+        routeName: userProfilePage,
         settings: settings,
-        page: ()=>BottomNavigationBarPage(),
-        binding: NavigationBarBinding()
+        page: ()=>const UserProfilePage()
       );
-
     default:
       return GetPageRoute(
         page: () => Scaffold(

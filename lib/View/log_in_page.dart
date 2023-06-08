@@ -1,13 +1,11 @@
-
 import 'package:ecommerceapp/Controllers/SignInController.dart';
 import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInPage extends GetView<SignInController> {
-   LogInPage({super.key});
+   const LogInPage({super.key});
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;

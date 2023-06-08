@@ -3,7 +3,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../Core/Routes/route_name.dart';
 import '../SharedPreferences/PrefKeys.dart';
 import '../SharedPreferences/shared_preferences.dart';
@@ -31,10 +30,8 @@ class SignInController extends GetxController {
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
         FirebaseAuth.instance.signInWithCredential(authCredential);
+        print(authCredential);
         Get.toNamed(navigationBarPage);
-        // if(isLoding==false){
-        //   SharedPreferences prefs = await SharedPreferences.getInstance();
-        //   prefs.setBool('uid', true);}
 
       } else {
         return null;
@@ -46,12 +43,6 @@ class SignInController extends GetxController {
 
   googleSignOut() async {
     _googleSignIn.signOut();
-
-    // isLoding=true;
-    // if(isLoding==true){
-    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   prefs.setBool('uid', false);
-    // }
   }
 
   Future<void> facebookLogin() async {
@@ -66,9 +57,6 @@ class SignInController extends GetxController {
       UserPreference.setValue(key: PrefKeys.facebookToken,value: result.accessToken!.token);
       print(UserPreference.getValue(key: PrefKeys.facebookToken));
       Get.toNamed(navigationBarPage);
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // prefs.setBool('uid', true);
-      // final userData = await FacebookAuth.instance.getUserData();
     } else {
       print(result.status);
       print(result.message);
@@ -80,6 +68,7 @@ class SignInController extends GetxController {
     _accessToken = null;
     _userData = null;
    await UserPreference.removeKey(key: PrefKeys.facebookToken);
+   print(UserPreference.removeKey(key: PrefKeys.facebookToken));
     update();
   }
 }

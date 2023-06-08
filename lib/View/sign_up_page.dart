@@ -1,6 +1,5 @@
 import 'package:ecommerceapp/Controllers/SignInController.dart';
 import 'package:ecommerceapp/Core/Routes/route_name.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Controllers/SignUpController.dart';
@@ -23,7 +22,7 @@ class SignUpPage extends GetView<SignUpController> {
             Container(
               padding: const EdgeInsets.only(left: 16, top: 99),
               child: const Text(
-                "Sign In",
+                "Sign Up",
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 34,
