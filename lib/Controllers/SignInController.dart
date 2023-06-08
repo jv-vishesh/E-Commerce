@@ -9,12 +9,9 @@ import '../SharedPreferences/shared_preferences.dart';
 
 class SignInController extends GetxController {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  TextEditingController nameController =
-      TextEditingController(text: "visheshpa");
-  TextEditingController passwordController =
-      TextEditingController(text: "1234567890");
-  TextEditingController emailController =
-      TextEditingController(text: "vish@gmail.com");
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   AccessToken? accessToken;
 
   Map<String, dynamic>? _userData;
@@ -30,10 +27,10 @@ class SignInController extends GetxController {
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
         FirebaseAuth.instance.signInWithCredential(authCredential);
-        UserPreference.setValue(key: PrefKeys.googleToken,value: authCredential.accessToken);
+        UserPreference.setValue(
+            key: PrefKeys.googleToken, value: authCredential.accessToken);
         print(authCredential);
         Get.toNamed(navigationPage);
-
       } else {
         return null;
       }
@@ -42,21 +39,23 @@ class SignInController extends GetxController {
     }
   }
 
-
-
   Future<void> facebookLogin() async {
     final LoginResult result = await FacebookAuth.instance.login();
     if (result.status == LoginStatus.success) {
       accessToken = result.accessToken;
-      final firebaseAuthCred = FacebookAuthProvider.credential(accessToken!.token);
-      final result2 = await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
+      final firebaseAuthCred =
+          FacebookAuthProvider.credential(accessToken!.token);
+      final result2 =
+          await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
 
       print(result2.user?.displayName);
-      UserPreference.setValue(key: PrefKeys.faceBookName,value: result2.user?.displayName);
+      UserPreference.setValue(
+          key: PrefKeys.faceBookName, value: result2.user?.displayName);
 
       final userData = await FacebookAuth.instance.getUserData();
       _userData = userData;
-      UserPreference.setValue(key: PrefKeys.facebookToken,value: result.accessToken?.token);
+      UserPreference.setValue(
+          key: PrefKeys.facebookToken, value: result.accessToken?.token);
       print(UserPreference.getValue(key: PrefKeys.facebookToken.toString()));
       Get.toNamed(navigationPage);
     } else {
@@ -64,6 +63,4 @@ class SignInController extends GetxController {
       print(result.message);
     }
   }
-
-
 }

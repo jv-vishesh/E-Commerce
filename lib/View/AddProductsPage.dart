@@ -7,6 +7,7 @@ class AddProductPage extends GetView<AddProductController> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> fromKey = GlobalKey();
     return GetBuilder<AddProductController>(
         init: controller,
         builder: (context) {
@@ -26,11 +27,17 @@ class AddProductPage extends GetView<AddProductController> {
                     height: 63,
                   ),
                   Form(
+                    key: fromKey,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         children: [
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Required Product Name';
+                              }
+                            },
                             controller: controller.productNameController,
                             decoration: const InputDecoration(
                                 label: Text(
@@ -43,6 +50,11 @@ class AddProductPage extends GetView<AddProductController> {
                             height: 9,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Required Brand';
+                              }
+                            },
                             controller: controller.brandController,
                             decoration: const InputDecoration(
                                 label: Text(
@@ -55,6 +67,11 @@ class AddProductPage extends GetView<AddProductController> {
                             height: 9,
                           ),
                           TextFormField(
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Required value';
+                              }
+                            },
                             controller: controller.sizeController,
                             decoration: const InputDecoration(
                                 label: Text(
@@ -81,7 +98,8 @@ class AddProductPage extends GetView<AddProductController> {
                                       decoration: BoxDecoration(
                                         color: Colors.grey[100],
                                       ),
-                                      child: const Center(child: CircularProgressIndicator()),
+                                      child: const Center(
+                                          child: CircularProgressIndicator()),
                                     ),
                                   );
                                 } else {
@@ -92,7 +110,8 @@ class AddProductPage extends GetView<AddProductController> {
                                       decoration: BoxDecoration(
                                         color: Colors.grey[100],
                                       ),
-                                      child: controller.imageUrl.value != "" && controller.imageUrl.value != null
+                                      child: controller.imageUrl.value != "" &&
+                                              controller.imageUrl.value != null
                                           ? Image.network(
                                               controller.imageUrl.value,
                                               fit: BoxFit.fill,
@@ -118,16 +137,23 @@ class AddProductPage extends GetView<AddProductController> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: GestureDetector(
                       onTap: () async {
-                        await controller.addProducts(
-                            productName: controller.productNameController.text,
-                            brandName: controller.brandController.text,
-                            size: controller.sizeController.text,
-                            image: controller.imageUrl.value);
-                        controller.productNameController.clear();
-                        controller.brandController.clear();
-                        controller.sizeController.clear();
-                        controller.imageUrl.value = '';
+                        if (fromKey.currentState!.validate()&& controller.imageUrl.value.isNotEmpty) {
 
+                            await controller.addProducts(
+                                productName:
+                                    controller.productNameController.text,
+                                brandName: controller.brandController.text,
+                                size: controller.sizeController.text,
+                                image: controller.imageUrl.value);
+                            controller.productNameController.clear();
+                            controller.brandController.clear();
+                            controller.sizeController.clear();
+                            controller.imageUrl.value = '';
+                          } else {
+                            Get.defaultDialog(
+                                title: "Error",
+                                content: Text('Image can\'t be empty'));
+                        }
                       },
                       child: Container(
                         height: 40,

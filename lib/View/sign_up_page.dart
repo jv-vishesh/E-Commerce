@@ -65,6 +65,8 @@ class SignUpPage extends GetView<SignUpController> {
                     height: 8,
                   ),
                   TextFormField(
+                    obscuringCharacter: "*",
+                    obscureText: true,
                     controller: controller.passwordController,
                     decoration: const InputDecoration(
                         filled: true,
@@ -147,7 +149,7 @@ class SignUpPage extends GetView<SignUpController> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                  //  await signInController.googleSignIn();
+                     await signInController.googleSignIn();
 
                   },
                   child: Container(

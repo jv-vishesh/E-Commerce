@@ -12,21 +12,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await UserPreference.initSharedPrefs();
-  final String? token = UserPreference.getValue(key: PrefKeys.facebookToken);
-  runApp(MyApp(
-    initRoute: token == null ? signUpPage : navigationPage,
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String? initRoute;
-  const MyApp({super.key, this.initRoute,});
+
+  const MyApp({super.key,});
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
       onGenerateRoute: genrateRoute,
-      initialRoute: initRoute,
+      initialRoute: UserPreference.getValue(key: PrefKeys.facebookToken)==null ? signUpPage : navigationPage,
     );
   }
 }

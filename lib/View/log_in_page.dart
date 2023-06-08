@@ -56,6 +56,7 @@ class LogInPage extends GetView<SignInController> {
                         height: 8,
                       ),
                       TextFormField(
+                        obscureText: true,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Required Password Or Enter Correct Password";

@@ -33,7 +33,7 @@ class UserProfilePage extends GetView<ProfilePageController> {
               children: [
                 CircleAvatar(
                   radius: 40,
-                  foregroundImage: NetworkImage(
+                  backgroundImage: NetworkImage(
                     FirebaseAuth.instance.currentUser?.photoURL.toString()??
                         "https://cdn-icons-png.flaticon.com/512/149/149071.png",
                   ),
@@ -45,7 +45,7 @@ class UserProfilePage extends GetView<ProfilePageController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      UserPreference.getValue(key: PrefKeys.faceBookName)??"",
+                      UserPreference.getValue(key: PrefKeys.faceBookName) ?? FirebaseAuth.instance.currentUser?.displayName ?? "",
                       style: const TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 16),
                     ),
@@ -282,10 +282,11 @@ class UserProfilePage extends GetView<ProfilePageController> {
                               controller.googleSignOut();
                               controller.emailAndPasswordSignOut();
                               controller.facebookLogout();
+                              UserPreference.removeKey(key: PrefKeys.faceBookName);
                               Get.offNamed(logInPage);
                             },
                             onCancel: (){
-                              Get.back();
+                              Navigator.pop(context);
                             }
 
                           );
