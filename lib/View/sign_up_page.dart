@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import '../Controllers/SignUpController.dart';
 
 class SignUpPage extends GetView<SignUpController> {
-  final SignUpController signUpController = Get.find<SignUpController>();
   @override
-  SignUpPage({super.key});
+   SignUpPage({super.key});
 
   final SignInController signInController = Get.put(SignInController());
 
@@ -115,7 +114,7 @@ class SignUpPage extends GetView<SignUpController> {
                       controller.emailController.text,
                       controller.passwordController.text,
                       controller.nameController.text);
-                  Get.toNamed(navigationBarPage);
+                  Get.toNamed(navigationPage);
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 16, right: 16),
@@ -148,7 +147,7 @@ class SignUpPage extends GetView<SignUpController> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    await signInController.googleSignIn();
+                  //  await signInController.googleSignIn();
 
                   },
                   child: Container(

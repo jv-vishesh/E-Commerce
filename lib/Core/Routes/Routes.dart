@@ -10,6 +10,7 @@ import 'package:ecommerceapp/View/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Bindings/HomePageBindings.dart';
+import '../../Bindings/ProfilePageBindings.dart';
 import 'route_name.dart';
 
 Route<dynamic>? genrateRoute(RouteSettings settings) {
@@ -33,9 +34,9 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
         page: () => const HomePage(),
         binding: HomepageBindings()
       );
-    case navigationBarPage:
+    case navigationPage:
       return GetPageRoute(
-          routeName: navigationBarPage,
+          routeName: navigationPage,
           settings: settings,
           page: ()=>BottomNavigationBarPage(),
           binding: NavigationBarBinding()
@@ -49,7 +50,8 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
       return GetPageRoute(
         routeName: userProfilePage,
         settings: settings,
-        page: ()=>const UserProfilePage()
+        page: ()=> UserProfilePage(),
+          binding: ProfilePageBinding()
       );
     default:
       return GetPageRoute(

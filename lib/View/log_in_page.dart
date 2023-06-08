@@ -1,4 +1,5 @@
 import 'package:ecommerceapp/Controllers/SignInController.dart';
+import 'package:ecommerceapp/Controllers/SignUpController.dart';
 import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:get/get.dart';
 
 class LogInPage extends GetView<SignInController> {
    const LogInPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -106,7 +108,7 @@ class LogInPage extends GetView<SignInController> {
                               // SharedPreferences prefs = await SharedPreferences.getInstance();
                               // prefs.setBool('uid', true);
 
-                              Get.toNamed(navigationBarPage);
+                              Get.toNamed(navigationPage);
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -123,7 +125,7 @@ class LogInPage extends GetView<SignInController> {
                               }
                             }
                           }
-                          Get.toNamed(navigationBarPage);
+                          Get.toNamed(navigationPage);
                         },
                         child: Container(
                           height: 40,
@@ -156,7 +158,7 @@ class LogInPage extends GetView<SignInController> {
                           GestureDetector(
                             onTap: () async {
                               await controller.googleSignIn();
-                              Get.toNamed(navigationBarPage);
+                              Get.toNamed(navigationPage);
                             },
                             child: Container(
                               height: 64,
@@ -172,14 +174,19 @@ class LogInPage extends GetView<SignInController> {
                           const SizedBox(
                             width: 16,
                           ),
-                          Container(
-                            height: 64,
-                            width: 92,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24)),
-                            child: const Icon(
-                              Icons.facebook,
-                              size: 24,
+                          InkWell(
+                            onTap: (){
+                              controller.facebookLogin();
+                            },
+                            child: Container(
+                              height: 64,
+                              width: 92,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(24)),
+                              child: const Icon(
+                                Icons.facebook,
+                                size: 24,
+                              ),
                             ),
                           )
                         ],

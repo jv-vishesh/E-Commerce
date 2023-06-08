@@ -8,39 +8,44 @@ import 'package:get/get.dart';
 import '../Controllers/AddProductController.dart';
 
 class BottomNavigationBarPage extends GetView<BottomNavigationBarController> {
- final AddProductController addProductController= Get.put(AddProductController());
-   BottomNavigationBarPage({super.key});
+  final AddProductController addProductController =
+      Get.put(AddProductController());
 
-  final screens=[
-     const HomePage(),
-     const AddProductPage(),
+  BottomNavigationBarPage({super.key});
+
+  final screens = [
+    const HomePage(),
+    const AddProductPage(),
     MyBagPage(),
-     const UserProfilePage()
+    UserProfilePage()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(()=>
-         IndexedStack(
+      body: Obx(
+        () => IndexedStack(
           index: controller.selectedIndex.value,
           children: screens,
         ),
       ),
-      bottomNavigationBar: Obx(()=>
-        BottomNavigationBar(
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          currentIndex: controller.selectedIndex.value,
-            onTap: (index){
-            controller.changeIndex(index);
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            currentIndex: controller.selectedIndex.value,
+            onTap: (index) {
+              controller.changeIndex(index);
             },
-            items:  const [
-              BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
-              BottomNavigationBarItem(icon: Icon(Icons.add),label: "Add"),
-              BottomNavigationBarItem(icon: Icon(Icons.shopping_cart),label: "Cart"),
-              BottomNavigationBarItem(icon: Icon(Icons.person),label: "Profile")
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart), label: "Cart"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: "Profile")
             ]),
       ),
-    ) ;
+    );
   }
 }

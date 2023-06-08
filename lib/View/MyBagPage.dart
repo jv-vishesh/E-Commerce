@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyBagPage extends StatelessWidget {
- final MyBagController myBagController=Get.put(MyBagController());
+ //final MyBagController myBagController=Get.put(MyBagController());
    MyBagPage({super.key});
 
 

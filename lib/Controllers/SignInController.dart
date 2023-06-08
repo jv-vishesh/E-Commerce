@@ -15,7 +15,7 @@ class SignInController extends GetxController {
       TextEditingController(text: "1234567890");
   TextEditingController emailController =
       TextEditingController(text: "vish@gmail.com");
-  AccessToken? _accessToken;
+  AccessToken? accessToken;
 
   Map<String, dynamic>? _userData;
   //final FirebaseAuth auth = FirebaseAuth.instance;
@@ -30,8 +30,9 @@ class SignInController extends GetxController {
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
         FirebaseAuth.instance.signInWithCredential(authCredential);
+        UserPreference.setValue(key: PrefKeys.googleToken,value: authCredential.accessToken);
         print(authCredential);
-        Get.toNamed(navigationBarPage);
+        Get.toNamed(navigationPage);
 
       } else {
         return null;
@@ -41,34 +42,28 @@ class SignInController extends GetxController {
     }
   }
 
-  googleSignOut() async {
-    _googleSignIn.signOut();
-  }
+
 
   Future<void> facebookLogin() async {
     final LoginResult result = await FacebookAuth.instance.login();
-
     if (result.status == LoginStatus.success) {
-      _accessToken = result.accessToken;
+      accessToken = result.accessToken;
+      final firebaseAuthCred = FacebookAuthProvider.credential(accessToken!.token);
+      final result2 = await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
+
+      print(result2.user?.displayName);
+      UserPreference.setValue(key: PrefKeys.faceBookName,value: result2.user?.displayName);
 
       final userData = await FacebookAuth.instance.getUserData();
       _userData = userData;
-
-      UserPreference.setValue(key: PrefKeys.facebookToken,value: result.accessToken!.token);
-      print(UserPreference.getValue(key: PrefKeys.facebookToken));
-      Get.toNamed(navigationBarPage);
+      UserPreference.setValue(key: PrefKeys.facebookToken,value: result.accessToken?.token);
+      print(UserPreference.getValue(key: PrefKeys.facebookToken.toString()));
+      Get.toNamed(navigationPage);
     } else {
       print(result.status);
       print(result.message);
     }
   }
 
-  facebookLogout() async {
-    await FacebookAuth.instance.logOut();
-    _accessToken = null;
-    _userData = null;
-   await UserPreference.removeKey(key: PrefKeys.facebookToken);
-   print(UserPreference.removeKey(key: PrefKeys.facebookToken));
-    update();
-  }
+
 }
