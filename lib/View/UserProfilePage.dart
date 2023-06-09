@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/ProfilePageController.dart';
-import 'package:ecommerceapp/Controllers/SignInController.dart';
-import 'package:ecommerceapp/Controllers/SignUpController.dart';
 import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +8,7 @@ import '../SharedPreferences/PrefKeys.dart';
 import '../SharedPreferences/shared_preferences.dart';
 
 class UserProfilePage extends GetView<ProfilePageController> {
-  // final SignInController signInController= Get.find<SignInController>();
-  // final SignUpController signUpController=Get.find<SignUpController>();
-   UserProfilePage({super.key});
+  const UserProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +30,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
                 CircleAvatar(
                   radius: 40,
                   backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser?.photoURL  == null ?
-                        "https://cdn-icons-png.flaticon.com/512/3135/3135715.png":FirebaseAuth.instance.currentUser!.photoURL.toString(),
+                    FirebaseAuth.instance.currentUser?.photoURL == null
+                        ? "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        : FirebaseAuth.instance.currentUser!.photoURL
+                        .toString(),
                   ),
                 ),
                 const SizedBox(
@@ -46,7 +43,7 @@ class UserProfilePage extends GetView<ProfilePageController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      UserPreference.getValue(key: PrefKeys.faceBookName) ?? FirebaseAuth.instance.currentUser?.displayName ??"NO Name",
+                      UserPreference.getValue(key: PrefKeys.faceBookName) ?? FirebaseAuth.instance.currentUser?.displayName ?? "NO Name",
                       style: const TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 16),
                     ),
@@ -65,7 +62,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -101,7 +101,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -137,7 +140,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -173,7 +179,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -209,7 +218,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -245,7 +257,10 @@ class UserProfilePage extends GetView<ProfilePageController> {
             ),
             Container(
               height: 72,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
               decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade300))),
               child: Padding(
@@ -280,38 +295,40 @@ class UserProfilePage extends GetView<ProfilePageController> {
               ),
             ),
             InkWell(
-              onTap: (){
+              onTap: () {
                 Get.defaultDialog(
                     buttonColor: Colors.yellow[800],
-                    cancelTextColor:Colors.black,
+                    cancelTextColor: Colors.black,
                     confirmTextColor: Colors.black,
                     title: "Sign Out",
-                    content: Text("Are You sure you want to Sign out.."),
+                    content: const Text("Are You sure you want to Sign out.."),
                     textConfirm: "Sign Out",
-                    onConfirm: (){
+                    onConfirm: () {
                       controller.googleSignOut();
                       controller.emailAndPasswordSignOut();
                       controller.facebookLogout();
                       UserPreference.removeKey(key: PrefKeys.faceBookName);
                       Get.offNamed(logInPage);
                     },
-                    onCancel: (){
+                    onCancel: () {
                       Navigator.pop(context);
-                    }
-
-                );
+                    });
               },
               child: Container(
                 height: 72,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 decoration: BoxDecoration(
-                    border: Border(top: BorderSide(color: Colors.grey.shade300))),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 17, bottom: 13),
+                    border:
+                    Border(top: BorderSide(color: Colors.grey.shade300))),
+                child: const Padding(
+                  padding:
+                  EdgeInsets.only(left: 16.0, top: 17, bottom: 13),
                   child: Text(
                     "Sign Out",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900, fontSize: 16),
+                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16),
                   ),
                 ),
               ),
