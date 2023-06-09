@@ -9,6 +9,7 @@ import 'ViewProductPage.dart';
 
 class HomePage extends GetView<HomePageController> {
   const HomePage({super.key});
+
   // final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -97,25 +98,22 @@ class HomePage extends GetView<HomePageController> {
                                 mainAxisSpacing: 29,
                                 childAspectRatio: 0.80),
                         itemBuilder: (context, index) {
-
                           return SingleChildScrollView(
                             child: Column(
                               children: [
                                 GestureDetector(
                                   onTap: () {
-
                                     Get.to(
                                       ViewProductPage(
                                         productImage: controller
                                             .productList[index].productImage,
                                         productName: controller
                                             .productList[index].productName,
-                                        size: controller
-                                            .productList[index].size,
+                                        size:
+                                            controller.productList[index].size,
                                         brandName: controller
                                             .productList[index].brandName,
-                                        id: controller
-                                            .productList[index].id,
+                                        id: controller.productList[index].id,
                                         // getProductModel: snapshot.data!.docs[index],
                                       ),
                                     );
@@ -123,21 +121,26 @@ class HomePage extends GetView<HomePageController> {
                                   child: Container(
                                       height: 208,
                                       width: 161,
-                                      decoration:  BoxDecoration(border:controller.productList[index]
-                                          .productImage !=
-                                          "" &&  controller.productList[index]
-                                          .productImage !=
-                                          null
-                                          ?Border():Border.all(),
-                                         ),
+                                      decoration: BoxDecoration(
+                                        border: controller.productList[index]
+                                                        .productImage !=
+                                                    "" &&
+                                                controller.productList[index]
+                                                        .productImage !=
+                                                    null
+                                            ? Border()
+                                            : Border.all(),
+                                      ),
                                       child: controller.productList[index]
-                                                  .productImage !=
-                                              "" &&  controller.productList[index]
-                                          .productImage !=
-                                          null
+                                                      .productImage !=
+                                                  "" &&
+                                              controller.productList[index]
+                                                      .productImage !=
+                                                  null
                                           ? Image.network(
                                               controller.productList[index]
-                                                  .productImage??"",
+                                                      .productImage ??
+                                                  "",
                                               fit: BoxFit.fill,
                                             )
                                           : Icon(Icons.error)),
@@ -153,8 +156,7 @@ class HomePage extends GetView<HomePageController> {
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  controller.productList[index].brandName ??
-                                      "",
+                                  controller.productList[index].brandName ?? "",
                                   style: const TextStyle(
                                       fontSize: 13, color: Colors.grey),
                                 )

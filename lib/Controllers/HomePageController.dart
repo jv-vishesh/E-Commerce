@@ -7,4 +7,11 @@ class HomePageController extends GetxController {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   List<GetProductModel> productList = [];
   final FirebaseAuth auth=FirebaseAuth.instance;
+
+DocumentReference?  currentUserReference = FirebaseFirestore.instance.collection("User")
+    .doc(FirebaseAuth.instance.currentUser?.uid);
+
+  DocumentReference?  productRefrence = FirebaseFirestore.instance.collection("ProductCategory")
+      .doc(FirebaseAuth.instance.currentUser?.uid);
+      //.collection().doc(currentUser!.uid);
 }

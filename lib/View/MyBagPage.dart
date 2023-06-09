@@ -1,21 +1,22 @@
 import 'package:ecommerceapp/Controllers/MyBagController.dart';
+import 'package:ecommerceapp/Controllers/ViewProductController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MyBagPage extends StatelessWidget {
+import '../Models/addToCartModel.dart';
+
+class MyBagPage extends GetView<ViewProductController> {
   final String? productNames;
   final String? productImages;
   final String? sizes;
   final String? productBrands;
-
-  //final MyBagController myBagController=Get.put(MyBagController());
-  const MyBagPage(
+  final ViewProductController myBagController=Get.put(ViewProductController());
+   MyBagPage(
       {super.key,
       this.productNames,
       this.productImages,
       this.sizes,
       this.productBrands});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,27 +48,66 @@ class MyBagPage extends StatelessWidget {
           const SizedBox(
             height: 23,
           ),
-          Expanded(
-            child: Column(
-              children: [
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 1,
-                    itemBuilder: (context, index) {
-                      return Container(
+          Column(
+            children: [
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.cartItems.length,
+                  itemBuilder: (context, index) {
+                    final AddtocartProducts products=controller.cartItems[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: Container(
                         height: 144,
+                        decoration: BoxDecoration(border: Border.all(width: 0.2)),
                         child: Row(
                           children: [
                             Container(
+                              height: 144,
                               width: 104,
-                              //child: Image.network(""),
+                              decoration: BoxDecoration(border: Border.all(width: 0.1)),
+                              child: Image.network(products.productImage??"",fit: BoxFit.fill,),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(products.productNames??"",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                  Text(products.productBrands??"",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                  Text("Size:- ${products.productSize??""}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                  Row(
+                                    children: [
+                                      Text("Colors:-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.grey),),
+                                      SizedBox(width: 5,),
+                                      Text("Black",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text("Quntity :-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                      SizedBox(width: 5,),
+                                      Text("2",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                    ],
+                                  ),
+                                  Text("Rs.4000",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 14),),
+
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 158.0,bottom: 100),
+                              child: InkWell(
+                                onTap: (){
+
+                                },
+                                  child: Icon(Icons.more_vert,color: Colors.grey,)),
                             )
                           ],
                         ),
-                      );
-                    }),
-              ],
-            ),
+                      ),
+                    );
+                  }),
+            ],
           )
         ],
       ),

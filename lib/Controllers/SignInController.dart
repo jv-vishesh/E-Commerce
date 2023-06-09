@@ -31,7 +31,7 @@ class SignInController extends GetxController {
         UserPreference.setValue(
             key: PrefKeys.googleToken, value: authCredential.accessToken);
         print(authCredential);
-        await _firestore.collection('User').doc(
+        _firestore.collection('User').doc(
             googleSignInAccount.id).set({
           "name": googleSignInAccount.displayName,
           "email":googleSignInAccount.email,

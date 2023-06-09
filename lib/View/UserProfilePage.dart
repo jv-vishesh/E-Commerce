@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/ProfilePageController.dart';
 import 'package:ecommerceapp/Controllers/SignInController.dart';
 import 'package:ecommerceapp/Controllers/SignUpController.dart';
@@ -34,8 +35,8 @@ class UserProfilePage extends GetView<ProfilePageController> {
                 CircleAvatar(
                   radius: 40,
                   backgroundImage: NetworkImage(
-                    FirebaseAuth.instance.currentUser?.photoURL.toString()??
-                        "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+                    FirebaseAuth.instance.currentUser?.photoURL  == null ?
+                        "https://cdn-icons-png.flaticon.com/512/3135/3135715.png":FirebaseAuth.instance.currentUser!.photoURL.toString(),
                   ),
                 ),
                 const SizedBox(
@@ -45,7 +46,7 @@ class UserProfilePage extends GetView<ProfilePageController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      UserPreference.getValue(key: PrefKeys.faceBookName) ?? FirebaseAuth.instance.currentUser?.displayName ?? "",
+                      UserPreference.getValue(key: PrefKeys.faceBookName) ?? FirebaseAuth.instance.currentUser?.displayName ??"NO Name",
                       style: const TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 16),
                     ),

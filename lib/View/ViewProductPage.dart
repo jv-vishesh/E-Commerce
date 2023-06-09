@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerceapp/Controllers/AddProductController.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
 import 'package:ecommerceapp/Controllers/ViewProductController.dart';
+import 'package:ecommerceapp/Models/addToCartModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ViewProductPage extends GetView<HomePageController> {
+  final ViewProductController viewProductController =
+      Get.put(ViewProductController());
   final String? productImage;
   final String? brandName;
   final String? productName;
   final String? size;
   final String? id;
-  const ViewProductPage( {
+
+  ViewProductPage({
     super.key,
     this.productImage,
     this.brandName,
@@ -106,56 +111,56 @@ class ViewProductPage extends GetView<HomePageController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: InkWell(
-                          onTap: () async {
-                            // DocumentReference targetUserRef =
-                            // FirebaseFirestore.instance.collection('User').doc(controller.auth.currentUser!.uid).get();
+                  FutureBuilder<DocumentSnapshot>(
+                      future: controller.currentUserReference?.get(),
+                      builder: (context, snapshot) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () async {
 
-                            List<String> myCart = [];
-
-                            //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('User').get();
-                            //
-                            // List<String> myCart = querySnapshot.docs
-                            //           .map((doc) => doc.data()!['my_cart'])
-                            //           .toList().toString();
-                            //
-
-                            List<String> convUserId = myCart
-                                ?.map((p0) => p0)
-                                .toList() ??
-                                [];
-                            convUserId
-                                .add(id??"");
-                            print(convUserId);
-                            await controller.fireStore.collection('User').doc(
-                                controller.auth.currentUser?.uid).update(
-                                {
-                              "my_cart": convUserId,
-                            });
-                          },
-                          child: Container(
-                            height: 38,
-                            width: 267,
-                            color: Colors.yellow[800],
-                            child: const Center(
-                                child: Text(
-                              "ADD TO BAG",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white),
-                            )),
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.favorite_border),
-                    ],
-                  )
+                                //
+                                // final  addproducts=AddtocartProducts(
+                                //   productImage:productImage ,
+                                //   productBrands:brandName ,
+                                //   productNames: productName,
+                                //   productSize: size,
+                                //   iD:id
+                                // ) ;
+                                // viewProductController.addItemInCart(addproducts);
+                                List<DocumentReference> myCart = snapshot
+                                        .data!["my_cart"]
+                                        .map((p0) => p0)
+                                        .toList() ??
+                                    [];
+                                myCart.add(controller.productRefrence!);
+                                print(myCart);
+                                await controller.fireStore
+                                    .collection('User')
+                                    .doc(controller.auth.currentUser?.uid)
+                                    .update({
+                                  "my_cart": myCart,
+                                });
+                              },
+                              child: Container(
+                                height: 38,
+                                width: 267,
+                                color: Colors.yellow[800],
+                                child: const Center(
+                                    child: Text(
+                                  "ADD TO BAG",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white),
+                                )),
+                              ),
+                            ),
+                            const Icon(Icons.favorite_border),
+                          ],
+                        );
+                      })
                 ],
               ),
             )
