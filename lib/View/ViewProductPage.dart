@@ -25,20 +25,6 @@ class ViewProductPage extends GetView<HomePageController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // actions: [
-          //   PopupMenuButton(
-          //       itemBuilder: (context) => [
-          //             PopupMenuItem(
-          //                 onTap: () async{
-          //                   // FirebaseAuth.instance.signOut();
-          //                   // signInController.googleSignOut();
-          //                 await  signInController.facebookLogout();
-          //                 //  Get.toNamed(logInPage);
-          //                   Get.offAllNamed(logInPage);
-          //                 },
-          //                 child: Text("Log Out"))
-          //           ])
-          // ],
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           title: Text(

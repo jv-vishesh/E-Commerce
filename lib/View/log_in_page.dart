@@ -159,7 +159,7 @@ class LogInPage extends GetView<SignInController> {
                           GestureDetector(
                             onTap: () async {
                               await controller.googleSignIn();
-                              Get.toNamed(navigationPage);
+
                             },
                             child: Container(
                               height: 64,

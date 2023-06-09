@@ -15,7 +15,6 @@ class SignInController extends GetxController {
   AccessToken? accessToken;
 
   Map<String, dynamic>? _userData;
-  //final FirebaseAuth auth = FirebaseAuth.instance;
   googleSignIn() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
@@ -35,7 +34,7 @@ class SignInController extends GetxController {
         return null;
       }
     } on FirebaseAuthException catch (e) {
-      throw e;
+      Get.showSnackbar() ;
     }
   }
 

@@ -36,17 +36,11 @@ class AddProductController extends GetxController {
     Reference reference =
     FirebaseStorage.instance.ref("Images").child(fileName);
     UploadTask uploadTask = reference.putFile(File(imageName.path));
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {print("upload completed");});
     String url = await taskSnapshot.ref.getDownloadURL();
     imageUrl.value = url;
     isLoading.value = false;
     update();
-    // Reference reference = storage.ref("Images").child(imageName.toString());
-    // UploadTask uploadTask = reference.putFile(File(selectedImage?.path??""));
-    // TaskSnapshot taskSnapshot = await uploadTask;
-    //  imageUrl= (await taskSnapshot.ref.getDownloadURL()) as RxString;
-    //  print(imageUrl.toString());
-    //update();
   }
 
 
