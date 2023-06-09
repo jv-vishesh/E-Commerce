@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 
 class SignUpController extends GetxController{
 
-  TextEditingController nameController=TextEditingController();
-  TextEditingController passwordController=TextEditingController();
-  TextEditingController emailController=TextEditingController();
+  TextEditingController nameController=TextEditingController(text: "vishesh");
+  TextEditingController passwordController = TextEditingController(text: "1234567890");
+  TextEditingController emailController = TextEditingController(text: "vish@gmail.com");
   final FirebaseFirestore user = FirebaseFirestore.instance;
 
   Future<void> emailAndPasswordSignUP(

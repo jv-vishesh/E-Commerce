@@ -12,19 +12,34 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await UserPreference.initSharedPrefs();
-  runApp(const MyApp());
+
+  String? faceBook = UserPreference.getValue(key: PrefKeys.facebookToken);
+  String? gmail = UserPreference.getValue(key: PrefKeys.googleToken);
+  String? email = UserPreference.getValue(key: PrefKeys.emailToken);
+
+  runApp(MyApp(
+      initRoute: faceBook != null
+          ? navigationPage
+          : gmail != null
+              ? navigationPage
+              : email != null
+                  ? navigationPage
+                  : logInPage));
 }
 
 class MyApp extends StatelessWidget {
-
-  const MyApp({super.key,});
+  final String? initRoute;
+  const MyApp({
+    super.key,
+    this.initRoute,
+  });
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Commerce App',
       onGenerateRoute: genrateRoute,
-      initialRoute: UserPreference.getValue(key: PrefKeys.facebookToken)==null ? signUpPage : navigationPage,
+      initialRoute: initRoute,
     );
   }
 }

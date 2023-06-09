@@ -97,11 +97,13 @@ class HomePage extends GetView<HomePageController> {
                                 mainAxisSpacing: 29,
                                 childAspectRatio: 0.80),
                         itemBuilder: (context, index) {
+
                           return SingleChildScrollView(
                             child: Column(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+
                                     Get.to(
                                       ViewProductPage(
                                         productImage: controller
@@ -112,6 +114,8 @@ class HomePage extends GetView<HomePageController> {
                                             .productList[index].size,
                                         brandName: controller
                                             .productList[index].brandName,
+                                        id: controller
+                                            .productList[index].id,
                                         // getProductModel: snapshot.data!.docs[index],
                                       ),
                                     );

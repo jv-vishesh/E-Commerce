@@ -1,24 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
-import 'package:ecommerceapp/Controllers/MyBagController.dart';
-import 'package:ecommerceapp/Controllers/SignInController.dart';
-import 'package:ecommerceapp/Core/Routes/route_name.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecommerceapp/Controllers/ViewProductController.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class ViewProductPage extends GetView<HomePageController> {
-  final SignInController signInController = Get.put(SignInController());
   final String? productImage;
   final String? brandName;
   final String? productName;
   final String? size;
-  ViewProductPage({
+  final String? id;
+  const ViewProductPage( {
     super.key,
     this.productImage,
     this.brandName,
     this.productName,
     this.size,
+    this.id,
   });
 
   @override
@@ -114,8 +112,31 @@ class ViewProductPage extends GetView<HomePageController> {
                       InkWell(
                         onTap: () {},
                         child: InkWell(
-                          onTap: () {
-                            //   Get.to(MyBagPage());
+                          onTap: () async {
+                            // DocumentReference targetUserRef =
+                            // FirebaseFirestore.instance.collection('User').doc(controller.auth.currentUser!.uid).get();
+
+                            List<String> myCart = [];
+
+                            //     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('User').get();
+                            //
+                            // List<String> myCart = querySnapshot.docs
+                            //           .map((doc) => doc.data()!['my_cart'])
+                            //           .toList().toString();
+                            //
+
+                            List<String> convUserId = myCart
+                                ?.map((p0) => p0)
+                                .toList() ??
+                                [];
+                            convUserId
+                                .add(id??"");
+                            print(convUserId);
+                            await controller.fireStore.collection('User').doc(
+                                controller.auth.currentUser?.uid).update(
+                                {
+                              "my_cart": convUserId,
+                            });
                           },
                           child: Container(
                             height: 38,

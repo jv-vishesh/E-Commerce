@@ -143,6 +143,29 @@ class LogInPage extends GetView<SignInController> {
                         ),
                       ),
                       const SizedBox(
+                        height: 40,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(signUpPage);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't have an account? SignUp",
+                              style:
+                              TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.arrow_right_alt,
+                              color: Colors.yellow[800],
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
                         height: 197,
                       ),
                       const Text(
@@ -159,7 +182,6 @@ class LogInPage extends GetView<SignInController> {
                           GestureDetector(
                             onTap: () async {
                               await controller.googleSignIn();
-
                             },
                             child: Container(
                               height: 64,
@@ -176,8 +198,8 @@ class LogInPage extends GetView<SignInController> {
                             width: 16,
                           ),
                           InkWell(
-                            onTap: (){
-                              controller.facebookLogin();
+                            onTap: () async {
+                             await controller.facebookLogin();
                             },
                             child: Container(
                               height: 64,

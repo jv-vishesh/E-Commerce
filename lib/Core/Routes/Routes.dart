@@ -15,18 +15,19 @@ import 'route_name.dart';
 
 Route<dynamic>? genrateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case logInPage:
+      return GetPageRoute(
+          routeName: logInPage,
+          settings: settings,
+          page: () =>  const LogInPage(),
+          binding: SignInPageBindings());
     case signUpPage:
       return GetPageRoute(
           routeName: signUpPage,
           settings: settings,
           page: ()=>SignUpPage(),
           binding: SignUpBinding());
-    case logInPage:
-      return GetPageRoute(
-          routeName: logInPage,
-          settings: settings,
-          page: () =>  const LogInPage(),
-      binding: SignInPageBindings());
+
     case homePage:
       return GetPageRoute(
         routeName: homePage,

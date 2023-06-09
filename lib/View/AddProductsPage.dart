@@ -7,6 +7,7 @@ class AddProductPage extends GetView<AddProductController> {
 
   @override
   Widget build(BuildContext context) {
+
     final GlobalKey<FormState> fromKey = GlobalKey();
     return GetBuilder<AddProductController>(
         init: controller,
@@ -138,7 +139,7 @@ class AddProductPage extends GetView<AddProductController> {
                     child: GestureDetector(
                       onTap: () async {
                         if (fromKey.currentState!.validate()&& controller.imageUrl.value.isNotEmpty) {
-
+                          print(controller.addProducts());
                             await controller.addProducts(
                                 productName:
                                     controller.productNameController.text,
