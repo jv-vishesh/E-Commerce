@@ -6,12 +6,20 @@ import 'package:get/get.dart';
 class HomePageController extends GetxController {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   List<GetProductModel> productList = [];
-  final FirebaseAuth auth=FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
-DocumentReference?  currentUserReference = FirebaseFirestore.instance.collection("User")
-    .doc(FirebaseAuth.instance.currentUser?.uid);
-
-  DocumentReference?  productRefrence = FirebaseFirestore.instance.collection("ProductCategory")
+  DocumentReference? currentUserReference = FirebaseFirestore.instance
+      .collection("User")
       .doc(FirebaseAuth.instance.currentUser?.uid);
-      //.collection().doc(currentUser!.uid);
+
+  productReferance({String? id}) {
+    if (FirebaseFirestore.instance.collection('ProductCategory').id != FirebaseFirestore.instance.collection('ProductCategory').id) {
+      DocumentReference? productRefrence =
+          FirebaseFirestore.instance.collection("ProductCategory").doc(id);
+      return productRefrence;
+    } else {
+      Get.snackbar("Error", "This Product is already Added");
+    }
+
+  } //.collection().doc(currentUser!.uid);
 }

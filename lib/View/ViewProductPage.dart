@@ -129,12 +129,13 @@ class ViewProductPage extends GetView<HomePageController> {
                                 //   iD:id
                                 // ) ;
                                 // viewProductController.addItemInCart(addproducts);
-                                List<DocumentReference> myCart = snapshot
+                                List myCart = snapshot
                                         .data!["my_cart"]
                                         .map((p0) => p0)
                                         .toList() ??
                                     [];
-                                myCart.add(controller.productRefrence!);
+
+                                myCart.add(controller.productReferance(id: id));
                                 print(myCart);
                                 await controller.fireStore
                                     .collection('User')

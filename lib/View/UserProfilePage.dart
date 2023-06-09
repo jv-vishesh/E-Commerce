@@ -270,34 +270,49 @@ class UserProfilePage extends GetView<ProfilePageController> {
                         ),
                       ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          Get.defaultDialog(
-                            buttonColor: Colors.yellow[800],
-                            cancelTextColor:Colors.black,
-                            confirmTextColor: Colors.black,
-                            title: "Sign Out",
-                            content: Text("Are You sure you want to Sign out.."),
-                            textConfirm: "Sign Out",
-                            onConfirm: (){
-                              controller.googleSignOut();
-                              controller.emailAndPasswordSignOut();
-                              controller.facebookLogout();
-                              UserPreference.removeKey(key: PrefKeys.faceBookName);
-                              Get.offNamed(logInPage);
-                            },
-                            onCancel: (){
-                              Navigator.pop(context);
-                            }
-
-                          );
-                        },
-                        child: Icon(
-                          Icons.navigate_next,
-                          size: 30,
-                          color: Colors.grey.shade700,
-                        ))
+                    Icon(
+                      Icons.navigate_next,
+                      size: 30,
+                      color: Colors.grey.shade700,
+                    )
                   ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: (){
+                Get.defaultDialog(
+                    buttonColor: Colors.yellow[800],
+                    cancelTextColor:Colors.black,
+                    confirmTextColor: Colors.black,
+                    title: "Sign Out",
+                    content: Text("Are You sure you want to Sign out.."),
+                    textConfirm: "Sign Out",
+                    onConfirm: (){
+                      controller.googleSignOut();
+                      controller.emailAndPasswordSignOut();
+                      controller.facebookLogout();
+                      UserPreference.removeKey(key: PrefKeys.faceBookName);
+                      Get.offNamed(logInPage);
+                    },
+                    onCancel: (){
+                      Navigator.pop(context);
+                    }
+
+                );
+              },
+              child: Container(
+                height: 72,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    border: Border(top: BorderSide(color: Colors.grey.shade300))),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 17, bottom: 13),
+                  child: Text(
+                    "Sign Out",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w900, fontSize: 16),
+                  ),
                 ),
               ),
             ),
