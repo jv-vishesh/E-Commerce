@@ -4,6 +4,7 @@ import 'package:ecommerceapp/Bindings/SignUpBindings.dart';
 import 'package:ecommerceapp/View/AddProductsPage.dart';
 import 'package:ecommerceapp/View/BottomNavigationBar.dart';
 import 'package:ecommerceapp/View/UserProfilePage.dart';
+import 'package:ecommerceapp/View/ViewProductPage.dart';
 import 'package:ecommerceapp/View/home_page.dart';
 import 'package:ecommerceapp/View/log_in_page.dart';
 import 'package:ecommerceapp/View/sign_up_page.dart';
@@ -53,6 +54,12 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
         settings: settings,
         page: ()=> UserProfilePage(),
           binding: ProfilePageBinding()
+      );
+    case viewProductPage:
+      return GetPageRoute(
+        routeName: viewProductPage,
+        settings: settings,
+        page: ()=>ViewProductPage()
       );
     default:
       return GetPageRoute(

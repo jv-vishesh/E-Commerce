@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
+import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:ecommerceapp/Models/GetProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'ViewProductPage.dart';
+import '../Models/ViewProductModel.dart';
 
 class HomePage extends GetView<HomePageController> {
   const HomePage({super.key});
@@ -101,20 +102,27 @@ class HomePage extends GetView<HomePageController> {
                             child: Column(
                               children: [
                                 GestureDetector(
-                                  onTap: () {
-                                    Get.to(
-                                      ViewProductPage(
-                                        productImage: controller
-                                            .productList[index].productImage,
-                                        productName: controller
-                                            .productList[index].productName,
-                                        size:
-                                            controller.productList[index].size,
-                                        brandName: controller
-                                            .productList[index].brandName,
-                                        id: controller.productList[index].id,
-                                        // getProductModel: snapshot.data!.docs[index],
-                                      ),
+                                  onTap: ()  {
+                                    ViewProductsModel products=ViewProductsModel(productSize:controller.productList[index].size,productNames:controller
+                                        .productList[index].productName,iD: controller.productList[index].id,productImage: controller
+                                        .productList[index].productImage,productBrands: controller
+                                        .productList[index].brandName);
+
+                                   controller.viewProduct(products);
+                                    Get.toNamed(
+                                      viewProductPage
+                                      // ViewProductPage(
+                                      //   productImage: controller
+                                      //       .productList[index].productImage,
+                                      //   productName: controller
+                                      //       .productList[index].productName,
+                                      //   size:
+                                      //       controller.productList[index].size,
+                                      //   brandName: controller
+                                      //       .productList[index].brandName,
+                                      //   id: controller.productList[index].id,
+                                      //   // getProductModel: snapshot.data!.docs[index],
+                                      // ),
                                     );
                                   },
                                   child: Container(

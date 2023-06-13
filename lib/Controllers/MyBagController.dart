@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerceapp/Models/GetProductModel.dart';
-import 'package:ecommerceapp/Models/UserModel.dart';
+import 'package:ecommerceapp/SharedPreferences/PrefKeys.dart';
+import 'package:ecommerceapp/SharedPreferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class MyBagController extends GetxController{
@@ -13,7 +13,7 @@ class MyBagController extends GetxController{
   List cartList = [];
   DocumentReference? currentUserReference = FirebaseFirestore.instance
       .collection("User")
-      .doc(FirebaseAuth.instance.currentUser?.uid);
+      .doc(UserPreference.getValue(key: PrefKeys.signInId));
 
   @override
   void onInit() {

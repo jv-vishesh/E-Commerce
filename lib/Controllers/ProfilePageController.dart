@@ -10,44 +10,33 @@ class ProfilePageController extends GetxController {
   String? usernames;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  onInit() {
+  @override
+  onInit() async{
     super.onInit();
-    getusername();
-    //update();
+    await getUserName();
+   // update();
   }
 
-  Future<String?> getusername() async {
-    if (UserPreference.getValue(key: PrefKeys.faceBookName) != null) {
-     usernames= await UserPreference.getValue(key: PrefKeys.faceBookName);
-    } else if (FirebaseAuth.instance.currentUser?.displayName != null) {
-    usernames=  await FirebaseAuth.instance.currentUser?.displayName;
-    } else if(UserPreference.getValue(key: PrefKeys.faceBookName) != null && FirebaseAuth.instance.currentUser?.displayName != null){
-      usernames = await FirebaseFirestore.instance
-          .collection('User')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .get()
-          .then((value) {
-        return value.data()?['name'];
-      });
-    }else{
-      return null;
-    }
+  Future<String?> getUserName() async {
+  DocumentSnapshot<Map<String,dynamic>> user= await FirebaseFirestore.instance.collection('User').doc(UserPreference.getValue(key: PrefKeys.signInId)).get();
+  print('====================${user.data().runtimeType}+${user.data()?['name']}');
+  usernames = user.data()?['name'];
     return usernames;
   }
 
   googleSignOut() async {
     _googleSignIn.signOut();
-    UserPreference.removeKey(key: PrefKeys.googleToken);
+    UserPreference.removeKey(key: PrefKeys.signInAndSignUp);
   }
 
   facebookLogout() async {
     await FacebookAuth.instance.logOut();
-    await UserPreference.removeKey(key: PrefKeys.facebookToken);
+    await UserPreference.removeKey(key: PrefKeys.signInAndSignUp);
     //update();
   }
 
   emailAndPasswordSignOut() async {
     FirebaseAuth.instance.signOut();
-    UserPreference.removeKey(key: PrefKeys.emailToken);
+    UserPreference.removeKey(key: PrefKeys.signInAndSignUp);
   }
 }

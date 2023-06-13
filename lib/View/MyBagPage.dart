@@ -4,15 +4,12 @@ import 'package:ecommerceapp/Controllers/ViewProductController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Models/UserModel.dart';
-
-
 class MyBagPage extends GetView<MyBagController> {
   final String? productNames;
   final String? productImages;
   final String? sizes;
   final String? productBrands;
-  final ViewProductController myBagController=Get.put(ViewProductController());
+  final ViewProductController viewProductController=Get.put(ViewProductController());
    MyBagPage(
       {super.key,
       this.productNames,
@@ -50,9 +47,9 @@ class MyBagPage extends GetView<MyBagController> {
           const SizedBox(
             height: 23,
           ),
-          FutureBuilder<DocumentSnapshot>(
+          FutureBuilder<DocumentSnapshot?>(
               future: controller.currentUserReference?.get(),
-              builder: (context,snapshot) {
+              builder: (context,AsyncSnapshot snapshot) {
                 if (snapshot.hasError) {
                   return Text("Error: ${snapshot.error}");
                 }
@@ -72,8 +69,11 @@ class MyBagPage extends GetView<MyBagController> {
                   itemCount: controller.cartList.length,
                    itemBuilder: (context, index) {
                     return StreamBuilder<DocumentSnapshot>(
-                      stream: controller.cartList[index].snapshots(),
+                      stream: controller.cartList[index].snapshots()??"",
                       builder: (context, snapshot) {
+                        if(snapshot.hasError){
+                          return Text("Error ${snapshot.error}");
+                        }
                         Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18.0),

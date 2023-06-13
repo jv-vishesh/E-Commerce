@@ -31,13 +31,16 @@ class SignInController extends GetxController {
             accessToken: googleSignInAuthentication.accessToken);
         _auth.signInWithCredential(authCredential);
         UserPreference.setValue(
-            key: PrefKeys.googleToken, value: authCredential.accessToken);
+            key: PrefKeys.signInAndSignUp, value: authCredential.accessToken);
         print(authCredential);
         _firestore.collection('User').doc(googleSignInAccount.id).set({
           "name": googleSignInAccount.displayName,
           "email": googleSignInAccount.email,
           "id": googleSignInAccount.id,
+          "my_cart": [],
         });
+        UserPreference.setValue(
+            key: PrefKeys.signInId, value: googleSignInAccount.id);
         Get.toNamed(navigationPage);
       } else {
         Get.snackbar('something Went wrong', "");
@@ -59,18 +62,22 @@ class SignInController extends GetxController {
       await _firestore.collection('User').doc(_auth.currentUser?.uid).set({
         "name": _auth.currentUser?.displayName,
         "email": _auth.currentUser?.email,
-        "id": _auth.currentUser?.uid
+        "id": _auth.currentUser?.uid,
+        "my_cart": []
       });
 
       print(result2.user?.displayName);
       UserPreference.setValue(
-          key: PrefKeys.faceBookName, value: result2.user?.displayName);
+          key: PrefKeys.signInId,
+          value: FirebaseAuth.instance.currentUser?.uid);
+      UserPreference.setValue(
+          key: PrefKeys.signInAndSignUp, value: result2.user?.displayName);
 
       final userData = await FacebookAuth.instance.getUserData();
       _userData = userData;
       UserPreference.setValue(
-          key: PrefKeys.facebookToken, value: result.accessToken?.token);
-      print(UserPreference.getValue(key: PrefKeys.facebookToken.toString()));
+          key: PrefKeys.signInAndSignUp, value: result.accessToken?.token);
+      print(UserPreference.getValue(key: PrefKeys.signInAndSignUp.toString()));
       Get.toNamed(navigationPage);
     } else {
       print(result.status);
@@ -83,7 +90,7 @@ class SignInController extends GetxController {
       await _auth.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
       UserPreference.setValue(
-          key: PrefKeys.emailToken, value: emailController.text);
+          key: PrefKeys.signInAndSignUp, value: emailController.text);
       Get.toNamed(navigationPage);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

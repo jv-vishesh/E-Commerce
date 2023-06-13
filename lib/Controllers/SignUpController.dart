@@ -16,12 +16,13 @@ class SignUpController extends GetxController{
   Future<void> emailAndPasswordSignUP() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text, password: passwordController.text);
+    UserPreference.setValue(key: PrefKeys.signInId,value:FirebaseAuth.instance.currentUser?.uid );
 
     await user
         .collection("User")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .set({"name": nameController.text, "email": emailController.text, "password":passwordController.text,"id": FirebaseAuth.instance.currentUser?.uid});
-    UserPreference.setValue(key:PrefKeys.emailToken,value: FirebaseAuth.instance.currentUser?.uid);
+        .set({"name": nameController.text, "email": emailController.text,"id": FirebaseAuth.instance.currentUser?.uid,"my_cart":[]});
+    UserPreference.setValue(key:PrefKeys.signInAndSignUp,value: FirebaseAuth.instance.currentUser?.uid);
     Get.toNamed(navigationPage);
   }
 

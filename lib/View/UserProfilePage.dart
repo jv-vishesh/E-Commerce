@@ -42,8 +42,8 @@ class UserProfilePage extends GetView<ProfilePageController> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      controller.usernames??"No Name",
+                    Text(controller.usernames==null?
+                      "No Name":controller.usernames.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 16),
                     ),
@@ -79,9 +79,8 @@ class UserProfilePage extends GetView<ProfilePageController> {
                       controller.googleSignOut();
                       controller.emailAndPasswordSignOut();
                       controller.facebookLogout();
-                      UserPreference.removeKey(key: PrefKeys.faceBookName);
-                      UserPreference.removeKey(key: PrefKeys.emailToken);
-                      Get.offAll(logInPage);
+                      UserPreference.removeKey(key: PrefKeys.signInAndSignUp);
+                      Get.offAllNamed(logInPage);
                     },
                     onCancel: () {
                       Navigator.pop(context);

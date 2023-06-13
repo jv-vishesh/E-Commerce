@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
 import 'package:ecommerceapp/Controllers/ViewProductController.dart';
+import 'package:ecommerceapp/SharedPreferences/PrefKeys.dart';
+import 'package:ecommerceapp/SharedPreferences/shared_preferences.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +32,7 @@ class ViewProductPage extends GetView<HomePageController> {
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           title: Text(
-            productName?.toUpperCase() ?? "",
+            controller.viewProducts.productNames?.toUpperCase() ?? "",
             style: const TextStyle(fontSize: 20, color: Colors.black),
           ),
           backgroundColor: Colors.white,
@@ -42,9 +45,9 @@ class ViewProductPage extends GetView<HomePageController> {
               width: MediaQuery.of(context).size.width,
               height: 414,
               color: Colors.green,
-              child: productImage != null && productImage != ""
+              child: controller.viewProducts.productImage != null && controller.viewProducts.productImage != ""
                   ? Image.network(
-                      productImage ?? "",
+                controller.viewProducts.productImage ?? "",
                       fit: BoxFit.fill,
                     )
                   : const Icon(Icons.error),
@@ -67,7 +70,7 @@ class ViewProductPage extends GetView<HomePageController> {
                           padding: const EdgeInsets.only(
                               left: 12.0, top: 10, bottom: 10),
                           child: Text(
-                            size ?? "",
+                            controller.viewProducts.productSize ?? "",
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -92,7 +95,7 @@ class ViewProductPage extends GetView<HomePageController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        brandName ?? "",
+                        controller.viewProducts.productBrands ?? "",
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                             fontSize: 14,
@@ -109,7 +112,7 @@ class ViewProductPage extends GetView<HomePageController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  FutureBuilder<DocumentSnapshot>(
+                  FutureBuilder<DocumentSnapshot?>(
                       future: controller.currentUserReference?.get(),
                       builder: (context, snapshot) {
                         return Row(
@@ -122,11 +125,11 @@ class ViewProductPage extends GetView<HomePageController> {
                                     .map((p0) => p0)
                                     .toList() ??
                                     [];
-                                myCart.add(controller.productReferance(id: id));
+                                myCart.add(controller.productReferance(id: controller.viewProducts.iD));
                                 print(myCart);
                                 await controller.fireStore
                                     .collection('User')
-                                    .doc(controller.auth.currentUser?.uid)
+                                    .doc(UserPreference.getValue(key: PrefKeys.signInId))
                                     .update({
                                   "my_cart": myCart,
                                 });
