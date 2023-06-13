@@ -52,36 +52,45 @@ class SignInController extends GetxController {
   }
 
   Future<void> facebookLogin() async {
-    final LoginResult result = await FacebookAuth.instance.login();
-    if (result.status == LoginStatus.success) {
-      accessToken = result.accessToken;
-      final firebaseAuthCred =
-          FacebookAuthProvider.credential(accessToken!.token);
-      final result2 =
-          await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
-      await _firestore.collection('User').doc(_auth.currentUser?.uid).set({
-        "name": _auth.currentUser?.displayName,
-        "email": _auth.currentUser?.email,
-        "id": _auth.currentUser?.uid,
-        "my_cart": []
-      });
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        accessToken = result.accessToken;
+        final firebaseAuthCred =
+            FacebookAuthProvider.credential(accessToken!.token);
+        final result2 =
+            await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
+        await _firestore.collection('User').doc(_auth.currentUser?.uid).set({
+          "name": _auth.currentUser?.displayName,
+          "email": _auth.currentUser?.email,
+          "id": _auth.currentUser?.uid,
+          "my_cart": []
+        });
 
-      print(result2.user?.displayName);
-      UserPreference.setValue(
-          key: PrefKeys.signInId,
-          value: FirebaseAuth.instance.currentUser?.uid);
-      UserPreference.setValue(
-          key: PrefKeys.signInAndSignUp, value: result2.user?.displayName);
+        print(result2.user?.displayName);
+        UserPreference.setValue(
+            key: PrefKeys.signInId,
+            value: FirebaseAuth.instance.currentUser?.uid);
+        UserPreference.setValue(
+            key: PrefKeys.signInAndSignUp, value: result2.user?.displayName);
 
-      final userData = await FacebookAuth.instance.getUserData();
-      _userData = userData;
-      UserPreference.setValue(
-          key: PrefKeys.signInAndSignUp, value: result.accessToken?.token);
-      print(UserPreference.getValue(key: PrefKeys.signInAndSignUp.toString()));
-      Get.toNamed(navigationPage);
-    } else {
-      print(result.status);
-      print(result.message);
+        final userData = await FacebookAuth.instance.getUserData();
+        _userData = userData;
+        UserPreference.setValue(
+            key: PrefKeys.signInAndSignUp, value: result.accessToken?.token);
+        print(
+            UserPreference.getValue(key: PrefKeys.signInAndSignUp.toString()));
+        Get.toNamed(navigationPage);
+      } else {
+        print(result.status);
+        print(result.message);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.snackbar('Error', "No user found for email");
+      } else if (e.code == 'wrong-password') {
+        Get.snackbar("Error", "Wrong password provided for that user.");
+      }
     }
   }
 

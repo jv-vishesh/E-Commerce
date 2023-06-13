@@ -1,8 +1,10 @@
+import 'package:ecommerceapp/Bindings/MyBagBindings.dart';
 import 'package:ecommerceapp/Bindings/NavigationBinding.dart';
 import 'package:ecommerceapp/Bindings/SignInPageBindings.dart';
 import 'package:ecommerceapp/Bindings/SignUpBindings.dart';
 import 'package:ecommerceapp/View/AddProductsPage.dart';
 import 'package:ecommerceapp/View/BottomNavigationBar.dart';
+import 'package:ecommerceapp/View/MyBagPage.dart';
 import 'package:ecommerceapp/View/UserProfilePage.dart';
 import 'package:ecommerceapp/View/ViewProductPage.dart';
 import 'package:ecommerceapp/View/home_page.dart';
@@ -60,6 +62,13 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
         routeName: viewProductPage,
         settings: settings,
         page: ()=>ViewProductPage()
+      );
+    case myBagPage:
+      return GetPageRoute(
+        routeName: myBagPage,
+        settings: settings,
+        page: ()=>MyBagPage(),
+        binding: MyBagBindings(),
       );
     default:
       return GetPageRoute(

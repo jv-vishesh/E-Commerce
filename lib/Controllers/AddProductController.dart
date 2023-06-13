@@ -6,10 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AddProductController extends GetxController {
-
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  TextEditingController productNameController =
-  TextEditingController();
+  TextEditingController productNameController = TextEditingController();
   TextEditingController brandController = TextEditingController();
   TextEditingController sizeController = TextEditingController();
   RxBool isLoading = false.obs;
@@ -29,28 +27,34 @@ class AddProductController extends GetxController {
 
   Future<void> uploadPic(XFile imageName) async {
     isLoading.value = true;
-    String fileName = DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString();
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference reference =
-    FirebaseStorage.instance.ref("Images").child(fileName);
+        FirebaseStorage.instance.ref("Images").child(fileName);
     UploadTask uploadTask = reference.putFile(File(imageName.path));
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {print("upload completed");});
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
+      print("upload completed");
+    });
     String url = await taskSnapshot.ref.getDownloadURL();
     imageUrl.value = url;
     isLoading.value = false;
     update();
   }
 
-
-  Future<void> addProducts(
-      {String? productName, brandName, size, image}) async {
+  Future<void> addProducts() async {
     await _fireStore.collection("ProductCategory").doc().set({
-      "productName": productName,
-      "brand": brandName,
-      "size": size,
-      "productImage": image,
+      "productName": productNameController.text,
+      "brand": brandController.text,
+      "size": sizeController.text,
+      "productImage": imageUrl.value,
     }).catchError((e) => print("$e"));
+    clearController();
+    }
+
+    void clearController() {
+     productNameController.clear();
+     brandController.clear();
+    sizeController.clear();
+    imageUrl.value='';
+    }
   }
-}
+

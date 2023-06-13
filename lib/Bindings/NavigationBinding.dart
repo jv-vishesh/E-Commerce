@@ -12,6 +12,6 @@ class NavigationBarBinding extends Bindings{
     Get.lazyPut(() => HomePageController(),fenix: true);
     Get.lazyPut(()=> AddProductController());
     Get.lazyPut(() => ProfilePageController());
-    Get.lazyPut(() => MyBagController());
+    Get.lazyPut(() => MyBagController(),fenix: true);
   }
 }

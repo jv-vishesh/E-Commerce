@@ -139,17 +139,8 @@ class AddProductPage extends GetView<AddProductController> {
                     child: GestureDetector(
                       onTap: () async {
                         if (fromKey.currentState!.validate()&& controller.imageUrl.value.isNotEmpty) {
-                          print(controller.addProducts());
-                            await controller.addProducts(
-                                productName:
-                                    controller.productNameController.text,
-                                brandName: controller.brandController.text,
-                                size: controller.sizeController.text,
-                                image: controller.imageUrl.value);
-                            controller.productNameController.clear();
-                            controller.brandController.clear();
-                            controller.sizeController.clear();
-                            controller.imageUrl.value = '';
+                            await controller.addProducts();
+
                           } else {
                             Get.defaultDialog(
                                 title: "Error",
@@ -175,6 +166,5 @@ class AddProductPage extends GetView<AddProductController> {
             ),
           );
         });
-    ;
   }
 }

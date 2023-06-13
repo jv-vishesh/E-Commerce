@@ -11,16 +11,22 @@ class ProfilePageController extends GetxController {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
-  onInit() async{
+  onInit() async {
     super.onInit();
     await getUserName();
-   // update();
+    update();
   }
 
   Future<String?> getUserName() async {
-  DocumentSnapshot<Map<String,dynamic>> user= await FirebaseFirestore.instance.collection('User').doc(UserPreference.getValue(key: PrefKeys.signInId)).get();
-  print('====================${user.data().runtimeType}+${user.data()?['name']}');
-  usernames = user.data()?['name'];
+    DocumentSnapshot<Map<String, dynamic>> user = await FirebaseFirestore
+        .instance
+        .collection('User')
+        .doc(UserPreference.getValue(key: PrefKeys.signInId))
+        .get();
+    print(
+        '====================${user.data().runtimeType}+${user.data()?['name']}');
+    usernames = user.data()?['name'];
+    update();
     return usernames;
   }
 

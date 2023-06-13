@@ -125,14 +125,15 @@ class ViewProductPage extends GetView<HomePageController> {
                                     .map((p0) => p0)
                                     .toList() ??
                                     [];
-                                myCart.add(controller.productReferance(id: controller.viewProducts.iD));
+                               myCart.add(controller.productReferance(id: controller.viewProducts.iD));
                                 print(myCart);
                                 await controller.fireStore
                                     .collection('User')
                                     .doc(UserPreference.getValue(key: PrefKeys.signInId))
                                     .update({
-                                  "my_cart": myCart,
+                                  "my_cart":myCart,
                                 });
+                                Get.snackbar('Successes', 'Your Product Has Been Add To My Bag',snackPosition: SnackPosition.BOTTOM,backgroundColor:Colors.black,colorText: Colors.white);
                               },
                               child: Container(
                                 height: 38,

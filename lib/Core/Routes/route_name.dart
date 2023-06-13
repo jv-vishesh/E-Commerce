@@ -6,4 +6,5 @@ const String signUpPage="/signUpPage";
 const String navigationPage="/navigationBar";
 const String userProfilePage="/userProfilePage";
 const String viewProductPage="/viewProductPage";
+const String myBagPage="/myBagPage";
 
