@@ -19,7 +19,7 @@ Route<dynamic>? genrateRoute(RouteSettings settings) {
       return GetPageRoute(
           routeName: logInPage,
           settings: settings,
-          page: () =>  const LogInPage(),
+          page: () =>  LogInPage(),
           binding: SignInPageBindings());
     case signUpPage:
       return GetPageRoute(

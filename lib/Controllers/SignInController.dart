@@ -1,29 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter/material.dart';
 import '../Core/Routes/route_name.dart';
 import '../SharedPreferences/PrefKeys.dart';
 import '../SharedPreferences/shared_preferences.dart';
 
 class SignInController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore=FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  TextEditingController passwordController = TextEditingController(text: "1234567890");
-  TextEditingController emailController = TextEditingController(text: "vish@gmail.com");
+  TextEditingController passwordController =
+      TextEditingController(text: "1234567890");
+  TextEditingController emailController =
+      TextEditingController(text: "vish@gmail.com");
   AccessToken? accessToken;
   Map<String, dynamic>? _userData;
 
   googleSignIn() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
-      await _googleSignIn.signIn();
+          await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
         final AuthCredential authCredential = GoogleAuthProvider.credential(
             idToken: googleSignInAuthentication.idToken,
             accessToken: googleSignInAuthentication.accessToken);
@@ -31,10 +33,9 @@ class SignInController extends GetxController {
         UserPreference.setValue(
             key: PrefKeys.googleToken, value: authCredential.accessToken);
         print(authCredential);
-        _firestore.collection('User').doc(
-            googleSignInAccount.id).set({
+        _firestore.collection('User').doc(googleSignInAccount.id).set({
           "name": googleSignInAccount.displayName,
-          "email":googleSignInAccount.email,
+          "email": googleSignInAccount.email,
           "id": googleSignInAccount.id,
         });
         Get.toNamed(navigationPage);
@@ -52,16 +53,14 @@ class SignInController extends GetxController {
     if (result.status == LoginStatus.success) {
       accessToken = result.accessToken;
       final firebaseAuthCred =
-      FacebookAuthProvider.credential(accessToken!.token);
+          FacebookAuthProvider.credential(accessToken!.token);
       final result2 =
-      await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
-      await _firestore.collection('User').doc(
-          _auth.currentUser?.uid).set(
-          {
-            "name": _auth.currentUser?.displayName,
-            "email": _auth.currentUser?.email,
-            "id": _auth.currentUser?.uid
-          });
+          await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
+      await _firestore.collection('User').doc(_auth.currentUser?.uid).set({
+        "name": _auth.currentUser?.displayName,
+        "email": _auth.currentUser?.email,
+        "id": _auth.currentUser?.uid
+      });
 
       print(result2.user?.displayName);
       UserPreference.setValue(
@@ -76,6 +75,22 @@ class SignInController extends GetxController {
     } else {
       print(result.status);
       print(result.message);
+    }
+  }
+
+  Future<void> signInValidate() async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      UserPreference.setValue(
+          key: PrefKeys.emailToken, value: emailController.text);
+      Get.toNamed(navigationPage);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.snackbar('Error', "No user found for email");
+      } else if (e.code == 'wrong-password') {
+        Get.snackbar("Error", "Wrong password provided for that user.");
+      }
     }
   }
 }

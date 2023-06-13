@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
-import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:ecommerceapp/Models/GetProductModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,7 +81,7 @@ class HomePage extends GetView<HomePageController> {
                         return Text("Error: ${snapshot.error}");
                       }
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: const CircularProgressIndicator());
+                        return const Center(child: CircularProgressIndicator());
                       }
                       if (snapshot.hasData) {
                         controller.productList = GetProductModel()
@@ -128,7 +127,7 @@ class HomePage extends GetView<HomePageController> {
                                                 controller.productList[index]
                                                         .productImage !=
                                                     null
-                                            ? Border()
+                                            ? const Border()
                                             : Border.all(),
                                       ),
                                       child: controller.productList[index]
@@ -143,7 +142,7 @@ class HomePage extends GetView<HomePageController> {
                                                   "",
                                               fit: BoxFit.fill,
                                             )
-                                          : Icon(Icons.error)),
+                                          : const Icon(Icons.error)),
                                 ),
                                 const SizedBox(
                                   height: 8,

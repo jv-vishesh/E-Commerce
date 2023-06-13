@@ -10,7 +10,30 @@ class ProfilePageController extends GetxController {
   String? usernames;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  onInit() {
+    super.onInit();
+    getusername();
+    //update();
+  }
 
+  Future<String?> getusername() async {
+    if (UserPreference.getValue(key: PrefKeys.faceBookName) != null) {
+     usernames= await UserPreference.getValue(key: PrefKeys.faceBookName);
+    } else if (FirebaseAuth.instance.currentUser?.displayName != null) {
+    usernames=  await FirebaseAuth.instance.currentUser?.displayName;
+    } else if(UserPreference.getValue(key: PrefKeys.faceBookName) != null && FirebaseAuth.instance.currentUser?.displayName != null){
+      usernames = await FirebaseFirestore.instance
+          .collection('User')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((value) {
+        return value.data()?['name'];
+      });
+    }else{
+      return null;
+    }
+    return usernames;
+  }
 
   googleSignOut() async {
     _googleSignIn.signOut();
@@ -26,10 +49,5 @@ class ProfilePageController extends GetxController {
   emailAndPasswordSignOut() async {
     FirebaseAuth.instance.signOut();
     UserPreference.removeKey(key: PrefKeys.emailToken);
-
   }
-
-
-
-
 }

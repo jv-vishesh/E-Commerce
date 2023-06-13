@@ -1,4 +1,5 @@
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
+import 'package:ecommerceapp/Controllers/MyBagController.dart';
 import 'package:ecommerceapp/Controllers/ProfilePageController.dart';
 import 'package:ecommerceapp/Controllers/bottom_navigation_bar_controller.dart';
 import 'package:get/get.dart';
@@ -11,5 +12,6 @@ class NavigationBarBinding extends Bindings{
     Get.lazyPut(() => HomePageController(),fenix: true);
     Get.lazyPut(()=> AddProductController());
     Get.lazyPut(() => ProfilePageController());
+    Get.lazyPut(() => MyBagController());
   }
 }

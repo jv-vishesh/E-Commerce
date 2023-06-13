@@ -3,10 +3,12 @@ import 'package:ecommerceapp/Core/Routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../Controllers/SignUpController.dart';
+import '../Core/Widget/CustomSmallButtons.dart';
+import '../Core/Widget/CustomTextfromfield.dart';
 
 class SignUpPage extends GetView<SignUpController> {
   @override
-   SignUpPage({super.key});
+  SignUpPage({super.key});
 
   final SignInController signInController = Get.put(SignInController());
 
@@ -36,47 +38,24 @@ class SignUpPage extends GetView<SignUpController> {
               padding: const EdgeInsets.only(left: 16.0, right: 16),
               child: Column(
                 children: [
-                  TextFormField(
-                    controller: controller.nameController,
-                    decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Color(0x00f2f2f2),
-                        label: Text(
-                          "Name",
-                          style: TextStyle(fontSize: 11),
-                        ),
-                        border: OutlineInputBorder()),
-                  ),
+                  CustomTextFormField(label: "Name",controller: controller.nameController,),
                   const SizedBox(
                     height: 8,
                   ),
-                  TextFormField(
-                    controller: controller.emailController,
-                    decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Color(0x00f2f2f2),
-                        label: Text(
-                          "Email",
-                          style: TextStyle(fontSize: 11),
-                        ),
-                        border: OutlineInputBorder()),
-                  ),
+                  CustomTextFormField(label: "Email",controller: controller.emailController,),
                   const SizedBox(
                     height: 8,
                   ),
-                  TextFormField(
-                    obscuringCharacter: "*",
+                  CustomTextFormField(
                     obscureText: true,
+                    label: 'Password',
                     controller: controller.passwordController,
-                    decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Color(0x00f2f2f2),
-                        label: Text(
-                          "Password",
-                          style: TextStyle(fontSize: 11),
-                        ),
-                        border: OutlineInputBorder()),
-                  ),
+                    validators: (value) {
+                      if (value!.isEmpty) {
+                        return "Password Field is Empty";
+                      }
+                    },
+                  )
                 ],
               ),
             )),
@@ -112,11 +91,8 @@ class SignUpPage extends GetView<SignUpController> {
             Center(
               child: GestureDetector(
                 onTap: () async {
-                  await controller.emailAndPasswordSignUP(
-                      controller.emailController.text,
-                      controller.passwordController.text,
-                      controller.nameController.text);
-                  Get.toNamed(navigationPage);
+                  await controller.emailAndPasswordSignUP();
+
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 16, right: 16),
@@ -147,35 +123,20 @@ class SignUpPage extends GetView<SignUpController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () async {
-                     await signInController.googleSignIn();
-
+                SmallIconButton(
+                  onTaps: ()async{
+                    await signInController.googleSignIn();
                   },
-                  child: Container(
-                    width: 92,
-                    height: 64,
-                    decoration: BoxDecoration(
-                        color: Colors.white60,
-                        borderRadius: BorderRadius.circular(24)),
-                    child: const Icon(Icons.g_mobiledata),
-                  ),
+                  icons: const Icon(Icons.g_mobiledata),
                 ),
                 const SizedBox(
                   width: 16,
                 ),
-                GestureDetector(
-                  onTap: () async {
+                SmallIconButton(
+                  onTaps: () async {
                     await signInController.facebookLogin();
                   },
-                  child: Container(
-                    width: 92,
-                    height: 64,
-                    decoration: BoxDecoration(
-                        color: Colors.white60,
-                        borderRadius: BorderRadius.circular(24)),
-                    child: const Icon(Icons.facebook),
-                  ),
+                  icons: const Icon(Icons.facebook),
                 )
               ],
             )

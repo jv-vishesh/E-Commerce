@@ -13,15 +13,14 @@ class SignUpController extends GetxController{
   TextEditingController emailController = TextEditingController(text: "vish@gmail.com");
   final FirebaseFirestore user = FirebaseFirestore.instance;
 
-  Future<void> emailAndPasswordSignUP(
-      String emails, dynamic passwords, String names) async {
+  Future<void> emailAndPasswordSignUP() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emails, password: passwords);
+        email: emailController.text, password: passwordController.text);
 
     await user
         .collection("User")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .set({"name": names, "email": emails, "password": passwords,"id": FirebaseAuth.instance.currentUser?.uid});
+        .set({"name": nameController.text, "email": emailController.text, "password":passwordController.text,"id": FirebaseAuth.instance.currentUser?.uid});
     UserPreference.setValue(key:PrefKeys.emailToken,value: FirebaseAuth.instance.currentUser?.uid);
     Get.toNamed(navigationPage);
   }

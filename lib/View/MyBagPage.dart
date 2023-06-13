@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/Controllers/MyBagController.dart';
 import 'package:ecommerceapp/Controllers/ViewProductController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Models/addToCartModel.dart';
+import '../Models/UserModel.dart';
 
-class MyBagPage extends GetView<ViewProductController> {
+
+class MyBagPage extends GetView<MyBagController> {
   final String? productNames;
   final String? productImages;
   final String? sizes;
@@ -48,66 +50,86 @@ class MyBagPage extends GetView<ViewProductController> {
           const SizedBox(
             height: 23,
           ),
-          Column(
-            children: [
-              ListView.builder(
+          FutureBuilder<DocumentSnapshot>(
+              future: controller.currentUserReference?.get(),
+              builder: (context,snapshot) {
+                if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasData) {
+                  controller.cartList = snapshot
+                      .data!["my_cart"]
+                      .map((p0) => p0)
+                      .toList() ??
+                      [];
+                  print(controller.cartList.length);
+                }
+              return ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.cartItems.length,
-                  itemBuilder: (context, index) {
-                    final AddtocartProducts products=controller.cartItems[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                      child: Container(
-                        height: 144,
-                        decoration: BoxDecoration(border: Border.all(width: 0.2)),
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 144,
-                              width: 104,
-                              decoration: BoxDecoration(border: Border.all(width: 0.1)),
-                              child: Image.network(products.productImage??"",fit: BoxFit.fill,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(products.productNames??"",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
-                                  Text(products.productBrands??"",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
-                                  Text("Size:- ${products.productSize??""}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
-                                  Row(
+                  itemCount: controller.cartList.length,
+                   itemBuilder: (context, index) {
+                    return StreamBuilder<DocumentSnapshot>(
+                      stream: controller.cartList[index].snapshots(),
+                      builder: (context, snapshot) {
+                        Map<String, dynamic>? data = snapshot.data?.data() as Map<String, dynamic>?;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                          child: Container(
+                            height: 144,
+                            decoration: BoxDecoration(border: Border.all(width: 0.2)),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 144,
+                                  width: 104,
+                                  decoration: BoxDecoration(border: Border.all(width: 0.1)),
+                                  child: Image.network(data?['productImage']??"https://t4.ftcdn.net/jpg/02/51/95/53/360_F_251955356_FAQH0U1y1TZw3ZcdPGybwUkH90a3VAhb.jpg",fit: BoxFit.fill,),
+                                ),
+                                 Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Text("Colors:-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.grey),),
-                                      SizedBox(width: 5,),
-                                      Text("Black",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                      Text(data?['productNames']??"",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                      Text(data?['brand']??"",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                      Text("Size:- ${data?['size']??""}",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                      const Row(
+                                        children: [
+                                          Text("Colors:-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.grey),),
+                                          SizedBox(width: 5,),
+                                          Text("Black",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                        ],
+                                      ),
+                                      const Row(
+                                        children: [
+                                          Text("Quntity :-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                          SizedBox(width: 5,),
+                                          Text("2",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
+                                        ],
+                                      ),
+                                      const Text("Rs.4000",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 14),),
+
                                     ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Text("Quntity :-",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
-                                      SizedBox(width: 5,),
-                                      Text("2",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13),),
-                                    ],
-                                  ),
-                                  Text("Rs.4000",style: TextStyle(fontWeight: FontWeight.w900,fontSize: 14),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 158.0,bottom: 100),
+                                  child: InkWell(
+                                    onTap: (){
 
-                                ],
-                              ),
+                                    },
+                                      child: const Icon(Icons.more_vert,color: Colors.grey,)),
+                                )
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 158.0,bottom: 100),
-                              child: InkWell(
-                                onTap: (){
-
-                                },
-                                  child: Icon(Icons.more_vert,color: Colors.grey,)),
-                            )
-                          ],
-                        ),
-                      ),
+                          ),
+                        );
+                      }
                     );
-                  }),
-            ],
+                  });
+            }
           )
         ],
       ),

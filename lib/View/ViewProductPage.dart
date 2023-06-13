@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerceapp/Controllers/AddProductController.dart';
 import 'package:ecommerceapp/Controllers/HomePageController.dart';
 import 'package:ecommerceapp/Controllers/ViewProductController.dart';
-import 'package:ecommerceapp/Models/addToCartModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -119,22 +117,11 @@ class ViewProductPage extends GetView<HomePageController> {
                           children: [
                             InkWell(
                               onTap: () async {
-
-                                //
-                                // final  addproducts=AddtocartProducts(
-                                //   productImage:productImage ,
-                                //   productBrands:brandName ,
-                                //   productNames: productName,
-                                //   productSize: size,
-                                //   iD:id
-                                // ) ;
-                                // viewProductController.addItemInCart(addproducts);
                                 List myCart = snapshot
-                                        .data!["my_cart"]
-                                        .map((p0) => p0)
-                                        .toList() ??
+                                    .data!["my_cart"]
+                                    .map((p0) => p0)
+                                    .toList() ??
                                     [];
-
                                 myCart.add(controller.productReferance(id: id));
                                 print(myCart);
                                 await controller.fireStore

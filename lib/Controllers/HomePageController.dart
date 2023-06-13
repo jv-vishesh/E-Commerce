@@ -13,13 +13,15 @@ class HomePageController extends GetxController {
       .doc(FirebaseAuth.instance.currentUser?.uid);
 
   productReferance({String? id}) {
-    if (FirebaseFirestore.instance.collection('ProductCategory').id != FirebaseFirestore.instance.collection('ProductCategory').id) {
+
       DocumentReference? productRefrence =
           FirebaseFirestore.instance.collection("ProductCategory").doc(id);
       return productRefrence;
-    } else {
-      Get.snackbar("Error", "This Product is already Added");
-    }
+    //  else {
+    //   Get.snackbar("Error", "This Product is already Added");
+    // }
 
-  } //.collection().doc(currentUser!.uid);
+  }
+
+  //.collection().doc(currentUser!.uid);
 }

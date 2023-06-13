@@ -1,16 +1,16 @@
 import 'package:ecommerceapp/Controllers/SignInController.dart';
-import 'package:ecommerceapp/Controllers/SignUpController.dart';
 import 'package:ecommerceapp/Core/Routes/route_name.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../Core/Widget/CustomSmallButtons.dart';
+import '../Core/Widget/CustomTextfromfield.dart';
+
 class LogInPage extends GetView<SignInController> {
-   const LogInPage({super.key});
+  const LogInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
     final GlobalKey<FormState> fromKey = GlobalKey();
     return Scaffold(
       body: SingleChildScrollView(
@@ -20,7 +20,7 @@ class LogInPage extends GetView<SignInController> {
             const Padding(
               padding: EdgeInsets.only(top: 100.0, left: 16),
               child: Text(
-                "Login ",
+                "Login",
                 style: TextStyle(
                     fontSize: 34,
                     color: Colors.black,
@@ -36,63 +36,53 @@ class LogInPage extends GetView<SignInController> {
                   padding: const EdgeInsets.only(left: 16.0, right: 16),
                   child: Column(
                     children: [
-                      TextFormField(
-                        validator: (value) {
+                      CustomTextFormField(
+                        validators: (value) {
                           if (value!.isEmpty) {
                             return "Required email Or Enter your Correct Email";
                           }
+                          return null;
                         },
+                        label: "Email",
                         controller: controller.emailController,
                         decoration: const InputDecoration(
                             filled: true,
-                            fillColor: Color(0xF2F2F2),
-                            label: Text(
-                              "Email",
-                              style: TextStyle(fontSize: 11),
-                            ),
+                            fillColor: Color(0x00f2f2f2),
                             border: OutlineInputBorder()),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
-                      TextFormField(
+                      CustomTextFormField(
+                        controller: controller.passwordController,
+                        obscuringCharacter: '*',
                         obscureText: true,
-                        validator: (value) {
+                        validators: (value) {
                           if (value!.isEmpty) {
                             return "Required Password Or Enter Correct Password";
                           }
+                          return null;
                         },
-                        controller: controller.passwordController,
-                        decoration: const InputDecoration(
-                            filled: true,
-                            fillColor: Color(0xF2F2F2),
-                            label: Text(
-                              "Password",
-                              style: TextStyle(fontSize: 11),
-                            ),
-                            border: OutlineInputBorder()),
+                        decoration: const InputDecoration(),
+                        label: 'password',
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Text(
-                              "Forgot your password?",
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Icon(
-                              Icons.arrow_right_alt,
-                              color: Colors.yellow[800],
-                            )
-                          ],
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Text(
+                            "Forgot your password?",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(),
+                          Icon(
+                            Icons.arrow_right_alt,
+                            color: Colors.yellow[800],
+                          )
+                        ],
                       ),
                       const SizedBox(
                         height: 37,
@@ -100,33 +90,10 @@ class LogInPage extends GetView<SignInController> {
                       GestureDetector(
                         onTap: () async {
                           if (fromKey.currentState!.validate()) {
-
-                            try {
-                              await auth.signInWithEmailAndPassword(
-                                  email: controller.emailController.text,
-                                  password: controller.passwordController.text);
-
-                              // SharedPreferences prefs = await SharedPreferences.getInstance();
-                              // prefs.setBool('uid', true);
-
-                              Get.toNamed(navigationPage);
-                            } on FirebaseAuthException catch (e) {
-                              if (e.code == 'user-not-found') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text("No user found for email")));
-                                // print('No user found for that email.');
-                              } else if (e.code == 'wrong-password') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            "Wrong password provided for that user.")));
-                                //  print('Wrong password provided for that user.');
-                              }
-                            }
+                            controller.signInValidate();
+                          } else {
+                            return;
                           }
-                          Get.toNamed(navigationPage);
                         },
                         child: Container(
                           height: 40,
@@ -154,8 +121,8 @@ class LogInPage extends GetView<SignInController> {
                           children: [
                             const Text(
                               "Don't have an account? SignUp",
-                              style:
-                              TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(width: 8),
                             Icon(
@@ -179,38 +146,20 @@ class LogInPage extends GetView<SignInController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              await controller.googleSignIn();
-                            },
-                            child: Container(
-                              height: 64,
-                              width: 92,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24)),
-                              child: const Icon(
-                                Icons.g_mobiledata,
-                                size: 24,
-                              ),
-                            ),
-                          ),
+                         SmallIconButton(
+                           onTaps: ()async{
+                             await controller.googleSignIn();
+                           },
+                           icons: const Icon(Icons.g_mobiledata),
+                         ),
                           const SizedBox(
                             width: 16,
                           ),
-                          InkWell(
-                            onTap: () async {
-                             await controller.facebookLogin();
+                          SmallIconButton(
+                            onTaps: () async {
+                              await controller.facebookLogin();
                             },
-                            child: Container(
-                              height: 64,
-                              width: 92,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24)),
-                              child: const Icon(
-                                Icons.facebook,
-                                size: 24,
-                              ),
-                            ),
+                            icons: const Icon(Icons.facebook),
                           )
                         ],
                       )
