@@ -8,6 +8,7 @@ import '../SharedPreferences/shared_preferences.dart';
 
 class ProfilePageController extends GetxController {
   String? usernames;
+  String? emailAddress;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
@@ -26,6 +27,7 @@ class ProfilePageController extends GetxController {
     print(
         '====================${user.data().runtimeType}+${user.data()?['name']}');
     usernames = user.data()?['name'];
+    emailAddress=user.data()?['email'];
     update();
     return usernames;
   }

@@ -1,4 +1,5 @@
 import 'package:ecommerceapp/Controllers/AddProductController.dart';
+import 'package:ecommerceapp/Core/Widget/CustomTextfromfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +8,6 @@ class AddProductPage extends GetView<AddProductController> {
 
   @override
   Widget build(BuildContext context) {
-
     final GlobalKey<FormState> fromKey = GlobalKey();
     return GetBuilder<AddProductController>(
         init: controller,
@@ -33,53 +33,23 @@ class AddProductPage extends GetView<AddProductController> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         children: [
-                          TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Required Product Name';
-                              }
-                            },
+                          CustomTextFormField(
+                            label: 'Product Name',
                             controller: controller.productNameController,
-                            decoration: const InputDecoration(
-                                label: Text(
-                                  'Product Name',
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                                border: OutlineInputBorder()),
                           ),
                           const SizedBox(
                             height: 9,
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Required Brand';
-                              }
-                            },
+                          CustomTextFormField(
+                            label: 'Brand',
                             controller: controller.brandController,
-                            decoration: const InputDecoration(
-                                label: Text(
-                                  "Brand",
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                                border: OutlineInputBorder()),
                           ),
                           const SizedBox(
                             height: 9,
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Required value';
-                              }
-                            },
+                          CustomTextFormField(
+                            label: 'Size',
                             controller: controller.sizeController,
-                            decoration: const InputDecoration(
-                                label: Text(
-                                  "Size",
-                                  style: TextStyle(fontSize: 11),
-                                ),
-                                border: OutlineInputBorder()),
                           ),
                           const SizedBox(
                             height: 58,
@@ -138,13 +108,13 @@ class AddProductPage extends GetView<AddProductController> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: GestureDetector(
                       onTap: () async {
-                        if (fromKey.currentState!.validate()&& controller.imageUrl.value.isNotEmpty) {
-                            await controller.addProducts();
-
-                          } else {
-                            Get.defaultDialog(
-                                title: "Error",
-                                content: Text('Image can\'t be empty'));
+                        if (fromKey.currentState!.validate() &&
+                            controller.imageUrl.value.isNotEmpty) {
+                          await controller.addProducts();
+                        } else {
+                          Get.defaultDialog(
+                              title: "Error",
+                              content: Text('Image can\'t be empty'));
                         }
                       },
                       child: Container(

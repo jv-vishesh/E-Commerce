@@ -7,7 +7,7 @@ class MyBagController extends GetxController {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
   List users = [];
   List<DocumentSnapshot> referenceDocuments = <DocumentSnapshot>[];
-  List cartList = [];
+  RxList cartList = [].obs;
   DocumentReference? currentUserReference;
 
   @override
@@ -17,6 +17,7 @@ class MyBagController extends GetxController {
     update();
   }
 
+
   void fetchData() async {
     DocumentReference? userReference = FirebaseFirestore.instance
         .collection("User")
@@ -24,6 +25,11 @@ class MyBagController extends GetxController {
     QuerySnapshot snapshot = await fireStore.collection('users').get();
     users = snapshot.docs;
     currentUserReference = userReference;
+    update();
+  }
+  void deleteCartItem(int cartIndex){
+    FirebaseFirestore.instance.collection('User').doc(UserPreference.getValue(key: PrefKeys.signInId)).update(
+        {'my_cart':FieldValue.arrayRemove([cartList?[cartIndex]])});
     update();
   }
 }

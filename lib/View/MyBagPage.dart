@@ -46,11 +46,11 @@ class MyBagPage extends GetView<MyBagController> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  FutureBuilder<DocumentSnapshot?>(
-                      future: controller.currentUserReference?.get(),
+                  FutureBuilder<DocumentSnapshot>(
+                      future : controller.currentUserReference?.get(),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Text("Error: ${snapshot.error}");
@@ -59,26 +59,25 @@ class MyBagPage extends GetView<MyBagController> {
                           return const Center(child: CircularProgressIndicator());
                         }
                         if (snapshot.hasData) {
-                          controller.cartList =
-                              snapshot.data!["my_cart"].map((p0) => p0).toList() ?? [];
+                          controller.cartList.value=snapshot.data!["my_cart"].map((p0) => p0).toList() ?? [];
                           print(controller.cartList.length);
                         }
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                        return Obx(() => ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: controller.cartList.length,
                             itemBuilder: (context, index) {
                               return StreamBuilder<DocumentSnapshot>(
-                                  stream: controller.cartList[index].snapshots() ?? "",
+                                  stream: controller.cartList[index].snapshots(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       return Text("Error ${snapshot.error}");
                                     }
                                     Map<String, dynamic>? data =
-                                        snapshot.data?.data() as Map<String, dynamic>?;
+                                    snapshot.data?.data() as Map<String, dynamic>?;
                                     return Padding(
                                       padding:
-                                          const EdgeInsets.symmetric(horizontal: 18.0,),
+                                      const EdgeInsets.symmetric(horizontal: 18.0,),
                                       child: Container(
                                         height: 144,
                                         decoration: BoxDecoration(
@@ -100,9 +99,9 @@ class MyBagPage extends GetView<MyBagController> {
                                               padding: const EdgeInsets.all(8.0),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   Text(
                                                     data?['productName'] ?? "",
@@ -175,9 +174,7 @@ class MyBagPage extends GetView<MyBagController> {
                                                   left: 158.0, bottom: 100),
                                               child: InkWell(
                                                   onTap: () async {
-                                                    controller.cartList
-                                                        .remove(data?[index]);
-                                                    // controller.currentUserReference?.delete();
+                                                    controller.deleteCartItem(index);
                                                   },
                                                   child: const Icon(
                                                     Icons.more_vert,
@@ -189,7 +186,7 @@ class MyBagPage extends GetView<MyBagController> {
                                       ),
                                     );
                                   });
-                            });
+                            }));
                       }),
                 ],
               ),

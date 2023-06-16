@@ -47,9 +47,8 @@ class UserProfilePage extends GetView<ProfilePageController> {
                       style: const TextStyle(
                           fontWeight: FontWeight.w900, fontSize: 16),
                     ),
-                    Text(
-                      FirebaseAuth.instance.currentUser?.email.toString() ??
-                          "Loging with email",
+                    Text(controller.emailAddress==null?
+                          "Loging with email":controller.emailAddress.toString(),
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w400),
                     )
